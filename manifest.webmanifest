@@ -1,0 +1,20 @@
+{
+  "id": "/deepbluemonkey/",
+  "name": "Deep Blue Monkey",
+  "short_name": "Deep Blue Monkey",
+  "description": "Open the Deep Blue Monkey website as an app.",
+  "start_url": "/deepbluemonkey/index.html",
+  "scope": "/deepbluemonkey/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#071a33",
+  "theme_color": "#063b68",
+  "icons": [
+    {
+      "src": "app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
