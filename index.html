@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#063b68">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Deep Blue Monkey">
+  <link rel="apple-touch-icon" href="favicon.png">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Welcome to Deep Blue Monkey.">
@@ -63,8 +68,27 @@
       text-decoration: none;
     }
 
-    a:hover {
+    a:hover,
+    button:hover {
       background: #c0f6fb;
+    }
+
+    button {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 999px;
+      color: #06243d;
+      background: #8ee8f2;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #install-help {
+      margin-top: 14px;
+      font-size: 0.95rem;
     }
 
     footer {
@@ -83,9 +107,37 @@
       Welcome to my corner of the internet. This is the beginning of
       something great—thanks for stopping by!
     </p>
+    <button id="install-app" type="button">Install app</button>
+    <p id="install-help" hidden>On Android, open the browser menu and choose Install app. On iPhone or iPad, tap Share, then Add to Home Screen. On desktop, use the install icon in the browser address bar or choose Install from the browser menu.</p>
     <a href="about.html">About</a>
     <a href="games.html">My Games</a>
     <footer>© 2026 Deep Blue Monkey Created by NilanjanC</footer>
   </main>
+  <script>
+    let installPrompt;
+    const installButton = document.getElementById("install-app");
+    const installHelp = document.getElementById("install-help");
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      installPrompt = event;
+    });
+
+    installButton.addEventListener("click", async () => {
+      if (!installPrompt) {
+        installHelp.hidden = false;
+        return;
+      }
+
+      installPrompt.prompt();
+      await installPrompt.userChoice;
+      installPrompt = null;
+    });
+
+    window.addEventListener("appinstalled", () => {
+      installButton.hidden = true;
+      installHelp.hidden = true;
+    });
+  </script>
 </body>
 </html>
