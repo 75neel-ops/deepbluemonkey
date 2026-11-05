@@ -71,6 +71,46 @@
     .home-link {
       margin-top: 28px;
     }
+
+    .game-card {
+      display: flex !important;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px !important;
+      border: 1px solid rgb(255 255 255 / 17%);
+      border-radius: 16px !important;
+      color: #eaf4ff !important;
+      background: linear-gradient(110deg, rgb(255 255 255 / 12%), rgb(142 232 242 / 10%)) !important;
+      text-align: left;
+      transition: transform 160ms ease, border-color 160ms ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-2px);
+      border-color: #8ee8f2;
+      background: linear-gradient(110deg, rgb(255 255 255 / 16%), rgb(142 232 242 / 16%)) !important;
+    }
+
+    .game-card img {
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
+      border-radius: 14px;
+      background: #d6ee76;
+      padding: 5px;
+    }
+
+    .game-card .tile-copy { display: grid; gap: 2px; flex: 1; }
+    .game-card .tile-label { color: #9feaf1; font-size: .68rem; letter-spacing: .13em; }
+    .game-card strong { color: #f2f7ff; font-size: 1.1rem; }
+    .game-card small { color: #c8e3f5; font-size: .86rem; font-weight: 400; }
+    .game-card .tile-arrow { color: #8ee8f2; font-size: 1.35rem; }
+    @media (max-width: 520px) {
+      .game-card { gap: 12px; padding: 13px !important; }
+      .game-card img { width: 48px; height: 48px; flex-basis: 48px; }
+      .game-card strong { font-size: 1rem; }
+      .game-card small { font-size: .78rem; }
+    }
   </style>
 </head>
 
@@ -80,6 +120,17 @@
     <p>Choose a game to play:</p>
 
     <div class="game-list">
+      <a class="game-card" href="https://chemistry-quest-nilanjanc.streamlit.app/" aria-label="Open Chemistry Quest for CBSE Class XI">
+        <img src="assets/chemistry-quest-icon.svg" alt="">
+        <span class="tile-copy"><span class="tile-label">CBSE CLASS XI · CHEMISTRY</span><strong>Chemistry Quest</strong><small>NCERT chapter words, quizzes and explanations</small></span>
+        <span class="tile-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="game-card" href="https://75neel-ops.github.io/CBSE-XI-Physics-Formula/" aria-label="Open Physics Quest for CBSE Class XI">
+        <img src="assets/physics-quest-icon.svg" alt="">
+        <span class="tile-copy"><span class="tile-label">CBSE CLASS XI · PHYSICS</span><strong>Physics Quest</strong><small>NCERT chapter revision, quizzes and explanations</small></span>
+        <span class="tile-arrow" aria-hidden="true">↗</span>
+      </a>
+
      <a href="https://therippleeffect-mnq3j29vwrnh7b3vzjhctj.streamlit.app/">The Ripple Effect</a>
      <a href="https://detectivezinnyinindia-zcxbwfkqpfeqz4mdddfgqb.streamlit.app/">Detective Zinny</a>
      <a href="https://word-unscramble-game-jib3busctl4r69vhqjx2tq.streamlit.app/">Word Scramble</a>
