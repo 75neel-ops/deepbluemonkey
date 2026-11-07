@@ -285,15 +285,6 @@ Return only JSON: {"scores":[{"id":"B1","marks":1.5,"feedback":"Brief reason"}]}
     total = round(sum(float(row["score"]) for row in results.values()),2)
     return {"score":total,"total":paper["total_marks"],"per_question":results}
 
-def rank_band(score,total):
-    p=100*score/total if total else 0
-    if p>=90: return 1,50_000
-    if p>=80: return 50_001,150_000
-    if p>=70: return 150_001,350_000
-    if p>=60: return 350_001,600_000
-    if p>=50: return 600_001,800_000
-    return 800_001,1_000_000
-
 @st.fragment(run_every="1s")
 def timer(deadline):
     remaining=max(0,int(deadline-time.time()))
@@ -328,7 +319,7 @@ if status=="setup":
     else:
         st.caption("Class XI exams are set by individual schools. This is CBSE-style practice, not one official nationwide paper pattern.")
     st.caption("Each session generates a fresh paper. We do not store a cross-user question history, so exact no-repeat across sessions cannot be guaranteed.")
-    st.caption("Written answers receive provisional AI marking. Scores and the motivational rank band are not official.")
+    st.caption("Written answers receive provisional AI marking. Scores are for practice and are not official.")
     if not API_KEY:
         st.warning("Add GEMINI_API_KEY in Streamlit App settings → Secrets to enable test generation.")
     if st.button("Generate fresh question paper",type="primary",disabled=CLIENT is None):
@@ -417,10 +408,27 @@ elif status=="finished":
     c1.metric("Score",f"{score:g} / {total}")
     c2.metric("Percentage",f"{percent:.1f}%")
     c3.metric("Paper code",paper["id"])
-    low,high=rank_band(score,total)
-    st.subheader("Motivational AIR estimate")
-    st.write(f"Illustrative band: **AIR {low:,}–{high:,}**")
-    st.caption("This broad score-band illustration assumes a hypothetical one-million-student comparison group. It is not a real All India Rank or validated prediction. Actual rank needs a common exam and real comparison data.")
+    if percent >= 90:
+        tier, motivation = "Exceptional", "Outstanding performance! Your preparation is on the right track."
+    elif percent >= 75:
+        tier, motivation = "Very strong", "Very good result! Keep building on this progress."
+    elif percent >= 50:
+        tier, motivation = "Developing", "Good effort! Review the questions you missed and keep practising."
+    else:
+        tier, motivation = "More practice needed", "Don’t be discouraged. Focus on your weaker areas—you can improve."
+    st.subheader(f"Performance: {tier}")
+    st.write(motivation)
+    missed = [
+        (q, result["per_question"][q["id"]])
+        for q in paper["questions"]
+        if result["per_question"][q["id"]]["score"] < result["per_question"][q["id"]]["max"]
+    ]
+    st.subheader("Questions to review")
+    if missed:
+        st.caption("These questions were incorrect, unanswered, or received partial marks. See the feedback and suggested answers below.")
+        st.write(" · ".join(q["id"] for q, _ in missed))
+    else:
+        st.success("Full marks on every question—excellent work!")
     st.subheader("Review and suggested answers")
     for q in paper["questions"]:
         row=result["per_question"][q["id"]]
