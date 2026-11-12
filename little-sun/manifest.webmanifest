@@ -1,0 +1,21 @@
+{
+  "id": "/deepbluemonkey/little-sun/",
+  "name": "Little Sun",
+  "short_name": "Little Sun",
+  "description": "Little Sun — a friendly ICSE learning app for Classes 1–8.",
+  "start_url": "/deepbluemonkey/little-sun/",
+  "scope": "/deepbluemonkey/little-sun/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fffdf8",
+  "theme_color": "#fff1cf",
+  "icons": [
+    {
+      "src": "app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+
