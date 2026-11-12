@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff1cf">
+  <meta name="description" content="Little Sun — a friendly ICSE learning app for Classes 1–8.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Little Sun">
+  <link rel="icon" type="image/svg+xml" href="app-icon.svg">
+  <link rel="apple-touch-icon" href="app-icon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Little Sun</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #fffdf8; }
+    #little-sun-app { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #fffdf8; }
+    #install-little-sun {
+      position: fixed; z-index: 5; top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right));
+      border: 1px solid #ead7ae; border-radius: 999px; padding: 10px 16px; color: #263950;
+      background: #fff8e9; box-shadow: 0 3px 14px #24354822; font: 700 14px system-ui, sans-serif; cursor: pointer;
+    }
+    #install-help {
+      position: fixed; z-index: 6; top: max(62px, calc(env(safe-area-inset-top) + 54px)); right: 12px;
+      width: min(340px, calc(100vw - 24px)); padding: 14px 16px; border: 1px solid #ead7ae; border-radius: 16px;
+      color: #263950; background: #fffdf8; box-shadow: 0 8px 28px #24354833; font: 14px/1.5 system-ui, sans-serif;
+    }
+    #install-help[hidden], #install-little-sun[hidden] { display: none; }
+    @media (display-mode: standalone) { #install-little-sun { display: none; } }
+  </style>
+</head>
+<body>
+  <iframe id="little-sun-app" title="Little Sun learning app" src="https://little-sun-j5hbo5nh6mac3z2prari7m.streamlit.app/?embed=true"></iframe>
+  <button id="install-little-sun" type="button">☀️ Install Little Sun</button>
+  <div id="install-help" role="status" hidden>In Chrome, choose <b>Install app</b> from the browser menu. On iPhone or iPad, tap <b>Share → Add to Home Screen</b>.</div>
+  <script>
+    let installPrompt;
+    const installButton = document.getElementById("install-little-sun");
+    const installHelp = document.getElementById("install-help");
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      installPrompt = event;
+    });
+    installButton.addEventListener("click", async () => {
+      if (!installPrompt) { installHelp.hidden = !installHelp.hidden; return; }
+      installPrompt.prompt();
+      await installPrompt.userChoice;
+      installPrompt = null;
+    });
+    window.addEventListener("appinstalled", () => { installButton.hidden = true; installHelp.hidden = true; });
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js");
+  </script>
+</body>
+</html>
+
